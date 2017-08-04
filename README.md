@@ -1,9 +1,9 @@
 # DSOD: Learning Deeply Supervised Object Detectors from Scratch
 
 
-This repository contains the code for the paper "DSOD: Learning Deeply Supervised Object Detectors from Scratch" (ICCV 2017).
+This repository contains the code for the paper ["DSOD: Learning Deeply Supervised Object Detectors from Scratch"](https://arxiv.org/abs/1708.01241) (ICCV 2017).
 
-The code was derived from the SSD framework (https://github.com/weiliu89/caffe/tree/ssd) with some new stuffs so that we could train the DSOD detectors from scratch. 
+The code was derived from the SSD framework (https://github.com/weiliu89/caffe/tree/ssd) with some new stuffs so that we could train DSOD from scratch. 
 
 If you use these models or find this helps your research, please cite:
 
@@ -18,7 +18,7 @@ If you use these models or find this helps your research, please cite:
 ## Introduction
 
 DSOD focuses on the problem of training object detector from scratch. 
-To the best of our knowledge, this is by far the first work which could train deep neural network based object detection from scratch. 
+To the best of our knowledge, this is by far the first work which could train deep neural network based object detectors from scratch with state-of-the-art performance. 
 In this work we contribute a set of design principles for this purpose. One of the key findings is the deeply supervised structure, which plays a critical role in learning a good detection model. Please see our paper for more details.
 
 <div align=center>
