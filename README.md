@@ -8,7 +8,7 @@ The code was derived from the SSD framework (https://github.com/weiliu89/caffe/t
 If you use these models or find this helps your research, please cite:
 
 
-	@article{Shen2017DSOD,
+	@inproceedings{Shen2017DSOD,
 		title = {DSOD: Learning Deeply Supervised Object Detectors from Scratch},
 		author = {Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
 		booktitle = {ICCV},
@@ -22,7 +22,7 @@ To the best of our knowledge, this is by far the first work which could train de
 In this work we contribute a set of design principles for this purpose. One of the key findings is the deeply supervised structure, which plays a critical role in learning a good detection model. Please see our paper for more details.
 
 <div align=center>
-<img src="https://user-images.githubusercontent.com/3794909/28934967-718c9302-78b5-11e7-89ee-8b514e53e23c.png" width="800">
+<img src="https://user-images.githubusercontent.com/3794909/28934967-718c9302-78b5-11e7-89ee-8b514e53e23c.png" width="740">
 </div>
 
 <div align=center>
