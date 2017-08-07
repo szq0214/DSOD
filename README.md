@@ -19,7 +19,7 @@ If you use these models or find this helps your research, please cite:
 
 DSOD focuses on the problem of training object detector from scratch (without pretrained models on ImageNet). 
 To the best of our knowledge, this is the first work that trains neural object detectors from scratch with state-of-the-art performance. 
-In this work, we contribute a set of design principles for this purpose. One of the key findings is the deeply supervised structure enabled by [DenseNet](https://github.com/liuzhuang13/DenseNet), plays a critical role in learning a good detection model. Please see our paper for more details.
+In this work, we contribute a set of design principles for this purpose. One of the key findings is the deeply supervised structure enabled by [dense layer-wise connections](https://github.com/liuzhuang13/DenseNet), plays a critical role in learning a good detection model. Please see our paper for more details.
 
 <div align=center>
 <img src="https://user-images.githubusercontent.com/3794909/28934967-718c9302-78b5-11e7-89ee-8b514e53e23c.png" width="740">
