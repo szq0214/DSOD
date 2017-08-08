@@ -42,6 +42,7 @@ PASCAL VOC test results:
 
 | Method | VOC 2007 test *mAP* | fps (Titan X) | # parameters | Models 
 |:-------|:-----:|:-------:|:-------:|:-------:|
+| DSOD300_smallest (07+12) | 73.6 | - | 5.9M | [Download (23.5M)](https://drive.google.com/open?id=0B4cvsEOB5eUCNXZ3eWNRNHZTdFk) |
 | DSOD300_lite (07+12) | 76.7 | 25.8 | 10.4M | [Download (41.8M)](https://drive.google.com/open?id=0B4cvsEOB5eUCQVozLVhONS1EX2s) |
 | DSOD300 (07+12) | 77.7 | 17.4 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=0B4cvsEOB5eUCaGU3MkRkOENRWWc) |
 | DSOD300 (07+12+COCO) | 81.7 | 17.4 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=0B4cvsEOB5eUCa3lDWTNIa1BfMUU)|
