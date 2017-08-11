@@ -7,7 +7,6 @@ The code is based on the SSD framework (https://github.com/weiliu89/caffe/tree/s
 
 If you use these models or find this helps your research, please cite:
 
-
 	@inproceedings{Shen2017DSOD,
 		title = {DSOD: Learning Deeply Supervised Object Detectors from Scratch},
 		author = {Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
@@ -58,13 +57,11 @@ COCO test-dev 2015 result (COCO has more object categories than VOC dataset, so 
 |:-------|:-----:|:-----:|
 | DSOD300 (COCO trainval) | 29.3 | [Download (87.2M)](https://drive.google.com/open?id=0B4cvsEOB5eUCYXoxcGRCbVFMNms) |
 
-
 ## Preparation 
 
 0. Install SSD (https://github.com/weiliu89/caffe/tree/ssd) following the instructions there, including: (1) Install SSD caffe; (2) Download PASCAL VOC 2007 and 2012 datasets; and (3) Create LMDB file. Make sure you can run it without any errors.
-1. Create a subfolder `dsod` under `example/`, add files `DSOD300_pascal.py`, `DSOD300_pascal++.py`, `DSOD300_coco.py` and `score_DSOD300_pascal.py` to the folder `example/dsod/`.
+1. Create a subfolder `dsod` under `example/`, add files `DSOD300_pascal.py`, `DSOD300_pascal++.py`, `DSOD300_coco.py`, `score_DSOD300_pascal.py` and `DSOD300_detection_demo.py` to the folder `example/dsod/`.
 2. Replace the file `model_libs.py` in the folder `python/caffe/` with ours.
-
 
 ## Training & Testing
 
@@ -86,12 +83,16 @@ COCO test-dev 2015 result (COCO has more object categories than VOC dataset, so 
   python examples/dsod/DSOD300_coco.py
   ```
   
-
 - Evaluate the model:
-
 
   ```shell
   python examples/dsod/score_DSOD300_pascal.py
+  ```
+  
+- Run a demo:
+
+  ```shell
+  python examples/dsod/DSOD300_detection_demo.py
   ```
   
  **Note**: You can modify the file `model_lib.py` to design your own network structure as you like.
@@ -109,4 +110,3 @@ Zhiqiang Shen (zhiqiangshen13 at fudan.edu.cn)
 Zhuang Liu (liuzhuangthu at gmail.com)
 
 Any comments or suggestions are welcome!
-
