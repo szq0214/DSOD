@@ -406,7 +406,7 @@ def DSOD300_V3_Body(net, from_layer):
 
     first_output = 128
     growth_rate = 48
-    dropout = 0.
+    dropout = 0
     nchannels = first_output
 
     assert from_layer in net.keys()
@@ -440,24 +440,24 @@ def DSOD300_V3_Body(net, from_layer):
 
     times = 1
     for i in range(6):
-        model = add_bl_layer(model, growth_rate, dropout, 1)
+        model = add_bl_layer(model, growth_rate, dropout, 4)
         nchannels += growth_rate
     nchannels = int(nchannels / times)
     model = transition(model, nchannels, dropout)  # pooling2: 38x38
     for i in range(8):
-        model = add_bl_layer(model, growth_rate, dropout, 1)
+        model = add_bl_layer(model, growth_rate, dropout, 4)
         nchannels += growth_rate
     nchannels = int(nchannels / times)
     model = transition_w_o_pooling(model, nchannels, dropout)  # 38x38
     net.First = model
     model1 = L.Pooling(model, pool=P.Pooling.MAX, kernel_size=2, stride=2)
     for i in range(8):
-        model1 = add_bl_layer(model1, growth_rate, dropout, 1)
+        model1 = add_bl_layer(model1, growth_rate, dropout, 4)
         nchannels += growth_rate
     nchannels = int(nchannels / times)
     model1 = transition_w_o_pooling(model1, nchannels, dropout)  # without pooling
     for i in range(8):
-        model1 = add_bl_layer(model1, growth_rate, dropout, 1)
+        model1 = add_bl_layer(model1, growth_rate, dropout, 4)
         nchannels += growth_rate
     # nchannels = int(nchannels / times)
     model1 = transition_w_o_pooling(model1, 256, dropout)  # without pooling
@@ -529,7 +529,7 @@ def DSOD512_V3_Body(net, from_layer):
 
     first_output = 128
     growth_rate = 48
-    dropout = 0.
+    dropout = 0
     nchannels = first_output
 
     assert from_layer in net.keys()
