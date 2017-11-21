@@ -1,11 +1,15 @@
 # DSOD: Learning Deeply Supervised Object Detectors from Scratch
 
 
-This repository contains the code for the paper ["DSOD: Learning Deeply Supervised Object Detectors from Scratch"](https://arxiv.org/abs/1708.01241) (To appear on ICCV 2017).
+This repository contains the code for the following paper 
 
-The code is based on the SSD framework (https://github.com/weiliu89/caffe/tree/ssd). 
+[DSOD: Learning Deeply Supervised Object Detectors from Scratch](http://openaccess.thecvf.com/content_ICCV_2017/papers/Shen_DSOD_Learning_Deeply_ICCV_2017_paper.pdf) (ICCV 2017).
 
-If you use these models or find this helps your research, please cite:
+[Zhiqiang Shen](http://www.zhiqiangshen.com)\*, [Zhuang Liu](liuzhuang13.github.io)\*, [Jianguo Li](https://sites.google.com/site/leeplus/), [Yu-Gang Jiang](http://www.yugangjiang.info/), [Yurong chen](https://scholar.google.com/citations?user=MKRyHXsAAAAJ&hl=en), [Xiangyang Xue](https://scholar.google.com/citations?user=DTbhX6oAAAAJ&hl=en). (\*Equal Contribution)
+
+The code is based on the [SSD](https://github.com/weiliu89/caffe/tree/ssd) framework. 
+
+If you find this helps your research, please cite:
 
 	@inproceedings{Shen2017DSOD,
 		title = {DSOD: Learning Deeply Supervised Object Detectors from Scratch},
