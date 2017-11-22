@@ -5,7 +5,7 @@ This repository contains the code for the following paper
 
 [DSOD: Learning Deeply Supervised Object Detectors from Scratch](http://openaccess.thecvf.com/content_ICCV_2017/papers/Shen_DSOD_Learning_Deeply_ICCV_2017_paper.pdf) (ICCV 2017).
 
-[Zhiqiang Shen](http://www.zhiqiangshen.com)\*, [Zhuang Liu](liuzhuang13.github.io)\*, [Jianguo Li](https://sites.google.com/site/leeplus/), [Yu-Gang Jiang](http://www.yugangjiang.info/), [Yurong chen](https://scholar.google.com/citations?user=MKRyHXsAAAAJ&hl=en), [Xiangyang Xue](https://scholar.google.com/citations?user=DTbhX6oAAAAJ&hl=en). (\*Equal Contribution)
+[Zhiqiang Shen](http://www.zhiqiangshen.com)\*, [Zhuang Liu](https://liuzhuang13.github.io/)\*, [Jianguo Li](https://sites.google.com/site/leeplus/), [Yu-Gang Jiang](http://www.yugangjiang.info/), [Yurong chen](https://scholar.google.com/citations?user=MKRyHXsAAAAJ&hl=en), [Xiangyang Xue](https://scholar.google.com/citations?user=DTbhX6oAAAAJ&hl=en). (\*Equal Contribution)
 
 The code is based on the [SSD](https://github.com/weiliu89/caffe/tree/ssd) framework. 
 
