@@ -109,7 +109,7 @@ COCO test-dev 2015 result (COCO has more object categories than VOC dataset, so 
 
 ## Contact
 
-Zhiqiang Shen (zhiqiangshen13 at fudan.edu.cn) 
+Zhiqiang Shen (zhiqiangshen0214 at gmail.com) 
 
 Zhuang Liu (liuzhuangthu at gmail.com)
 
