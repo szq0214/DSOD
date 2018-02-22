@@ -65,7 +65,8 @@ COCO test-dev 2015 result (COCO has more object categories than VOC dataset, so 
 
 0. Install SSD (https://github.com/weiliu89/caffe/tree/ssd) following the instructions there, including: (1) Install SSD caffe; (2) Download PASCAL VOC 2007 and 2012 datasets; and (3) Create LMDB file. Make sure you can run it without any errors.
 1. Create a subfolder `dsod` under `example/`, add files `DSOD300_pascal.py`, `DSOD300_pascal++.py`, `DSOD300_coco.py`, `score_DSOD300_pascal.py` and `DSOD300_detection_demo.py` to the folder `example/dsod/`.
-2. Replace the file `model_libs.py` in the folder `python/caffe/` with ours.
+2. Create a subfolder `grp_dsod` under `example/`, add files `GRP_DSOD320_pascal.py` and `score_GRP_DSOD320_pascal.py` to the folder `example/grp_dsod/`.
+3. Replace the file `model_libs.py` in the folder `python/caffe/` with ours.
 
 ## Training & Testing
 
@@ -87,16 +88,28 @@ COCO test-dev 2015 result (COCO has more object categories than VOC dataset, so 
   python examples/dsod/DSOD300_coco.py
   ```
   
-- Evaluate the model:
+- Evaluate the model (DSOD):
 
   ```shell
   python examples/dsod/score_DSOD300_pascal.py
   ```
   
-- Run a demo:
+- Run a demo (DSOD):
 
   ```shell
   python examples/dsod/DSOD300_detection_demo.py
+  ```
+  
+- Train a GRP_DSOD model on VOC 07+12:
+
+  ```shell
+  python examples/grp_dsod/GRP_DSOD320_pascal.py
+  ```
+  
+- Evaluate the model (GRP_DSOD):
+
+  ```shell
+  python examples/dsod/score_GRP_DSOD320_pascal.py
   ```
   
  **Note**: You can modify the file `model_lib.py` to design your own network structure as you like.

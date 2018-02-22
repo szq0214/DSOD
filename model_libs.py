@@ -603,6 +603,252 @@ def DSOD512_V3_Body(net, from_layer):
     net.Seventh_ = model6
     return net
 
+def GRP_DSOD320_V6_Recurrent_Pyramid(net, from_layer):
+
+    def conv_bn_relu(bottom, ks, nout, stride, pad, dropout, inplace=True):
+        conv = L.Convolution(bottom, kernel_size=ks, stride=stride,
+                       num_output=nout, pad=pad, bias_term=False, weight_filler=dict(type='xavier'),
+                       bias_filler=dict(type='constant'))
+        batch_norm = L.BatchNorm(conv, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                                 param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                        dict(lr_mult=0, decay_mult=0)])
+        scale = L.Scale(batch_norm, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+        relu = L.ReLU(scale, in_place=True)
+        if dropout > 0:
+            conv = L.Dropout(relu, dropout_ratio=dropout)
+        return relu
+
+    def deconv(bottom, ks, nout, stride, dropout, inplace=True):
+        deconv = L.Deconvolution(bottom, convolution_param=dict(num_output=nout, kernel_size=ks, stride=stride,
+                                bias_term=False, weight_filler=dict(type='bilinear')), param=[dict(lr_mult=0, decay_mult=0)])
+        batch_norm = L.BatchNorm(deconv, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                         param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                dict(lr_mult=0, decay_mult=0)])
+        scale = L.Scale(batch_norm, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+        relu = L.ReLU(scale, in_place=True)
+        if dropout > 0:
+            conv = L.Dropout(relu, dropout_ratio=dropout)
+        return relu
+
+    def dilation_conv(bottom, ks, nout, stride, pad, dropout, dilation, inplace=True):
+        conv = L.Convolution(bottom, kernel_size=ks, stride=stride,
+                       num_output=nout, pad=pad, dilation=dilation, bias_term=False, weight_filler=dict(type='xavier'),
+                       bias_filler=dict(type='constant'))
+        batch_norm = L.BatchNorm(conv, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                                 param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                        dict(lr_mult=0, decay_mult=0)])
+        scale = L.Scale(batch_norm, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+        relu = L.ReLU(scale, in_place=True)
+        if dropout > 0:
+            conv = L.Dropout(relu, dropout_ratio=dropout)
+        return relu
+
+    def add_recurrent_layer(bottom, ks, num_filter, dropout):
+        # conv = conv_bn_relu(bottom, ks=1, nout=int(width*num_filter), stride=1, pad=0, dropout=dropout)
+        # conv = conv_bn_relu(conv, ks=3, nout=num_filter, stride=2, pad=1, dropout=dropout)  # new conv
+        # conv2 = L.Pooling(bottom, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+        # conv2 = conv_bn_relu(conv2, ks=1, nout=num_filter, stride=1, pad=0, dropout=dropout)  # previous conv
+        extra_de = deconv(bottom, ks=ks, nout=num_filter, stride=2, dropout=dropout)  # later conv
+        # concate = L.concate(conv, conv2, extra_de, axis=1)
+        return extra_de
+
+    def add_layer(bottom, num_filter, dropout):
+        conv = conv_bn_relu(bottom, ks=3, nout=num_filter, stride=1, pad=1, dropout=dropout)
+        concate = L.Concat(bottom, conv, axis=1)
+        return concate
+
+    def add_bl_layer(bottom, num_filter, dropout, width):
+        conv = conv_bn_relu(bottom, ks=1, nout=int(width*num_filter), stride=1, pad=0, dropout=dropout)
+        conv = conv_bn_relu(conv, ks=3, nout=num_filter, stride=1, pad=1, dropout=dropout)
+        concate = L.Concat(bottom, conv, axis=1)
+        return concate
+
+    def add_bl_layer2(bottom, num_filter, dropout, width):
+        conv = conv_bn_relu(bottom, ks=1, nout=int(width*num_filter), stride=1, pad=0, dropout=dropout)
+        conv = conv_bn_relu(conv, ks=3, nout=num_filter, stride=2, pad=1, dropout=dropout)
+        conv2 = L.Pooling(bottom, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+        conv2 = conv_bn_relu(conv2, ks=1, nout=num_filter, stride=1, pad=0, dropout=dropout)
+        concate = L.Concat(conv2, conv, axis=1)
+        return concate
+
+    def transition(bottom, num_filter, dropout):
+        conv = conv_bn_relu(bottom, ks=1, nout=num_filter, stride=1, pad=0, dropout=dropout, inplace=False)
+        pooling = L.Pooling(bottom, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+        return pooling
+
+    def transition3x3(bottom, num_filter, dropout):
+        conv = conv_bn_relu(bottom, ks=3, nout=num_filter, stride=2, pad=0, dropout=dropout, inplace=False)
+        # pooling = L.Pooling(conv, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+        return conv
+
+    def transition_w_o_pooling(bottom, num_filter, dropout):
+        conv = conv_bn_relu(bottom, ks=1, nout=num_filter, stride=1, pad=0, dropout=dropout, inplace=False)
+        return conv
+
+    first_output = 128
+    growth_rate = 48
+    dropout = 0.0
+    nchannels = first_output
+
+    assert from_layer in net.keys()
+
+    # Stem
+    model = L.Convolution(net[from_layer], kernel_size=3, stride=2, num_output=64,  # output: 16x160
+                          pad=1, bias_term=False, weight_filler=dict(type='xavier'),
+                          bias_filler=dict(type='constant'))
+    model = L.BatchNorm(model, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                           param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                  dict(lr_mult=0, decay_mult=0)])
+    model = L.Scale(model, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+    model = L.ReLU(model, in_place=True)
+
+    model = L.Convolution(model, kernel_size=3, stride=1, num_output=64,
+                          pad=1, bias_term=False, weight_filler=dict(type='xavier'),
+                          bias_filler=dict(type='constant'))
+    model = L.BatchNorm(model, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                           param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                  dict(lr_mult=0, decay_mult=0)])
+    model = L.Scale(model, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+    model = L.ReLU(model, in_place=True)
+
+    model = L.Convolution(model, kernel_size=3, stride=1, num_output=128,
+                          pad=1, bias_term=False, weight_filler=dict(type='xavier'),
+                          bias_filler=dict(type='constant'))
+    model = L.BatchNorm(model, in_place=True, batch_norm_param = dict(eps = 1e-4),
+                           param=[dict(lr_mult=0, decay_mult=0), dict(lr_mult=0, decay_mult=0),
+                                  dict(lr_mult=0, decay_mult=0)])
+    model = L.Scale(model, bias_term=True, in_place=True, filler=dict(value=1), bias_filler=dict(value=0))
+    model = L.ReLU(model, in_place=True)
+    model0 = L.Pooling(model, pool=P.Pooling.MAX, kernel_size=2, stride=2)  # pooling1: 80x80
+
+    times = 1
+
+    for i in range(6):
+        model0 = add_bl_layer(model0, growth_rate, dropout, 4)
+        nchannels += growth_rate
+    nchannels = int(nchannels / times)
+    model0 = transition_w_o_pooling(model0, nchannels, dropout)  # 80x80
+
+    model1 = L.Pooling(model0, pool=P.Pooling.MAX, kernel_size=2, stride=2)  # 40x40
+    for i in range(8):
+        model1 = add_bl_layer(model1, growth_rate, dropout, 4)
+        nchannels += growth_rate
+    nchannels = int(nchannels / times)
+    model1 = transition_w_o_pooling(model1, nchannels, dropout)  # 40x40
+
+    f_extra0 = L.Pooling(model, pool=P.Pooling.MAX, kernel_size=4, stride=4)
+    f_extra0 = conv_bn_relu(f_extra0, ks=1, nout=128, stride=1, pad=0, dropout=dropout)
+    f_extra1 = L.Pooling(model0, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+    f_extra1 = conv_bn_relu(f_extra1, ks=1, nout=128, stride=1, pad=0, dropout=dropout)
+    Concat1 = L.Concat(model1, f_extra0, f_extra1, axis=1)
+    net.First = Concat1 #  40x40
+
+    model2 = L.Pooling(model1, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+    for i in range(8):
+        model2 = add_bl_layer(model2, growth_rate, dropout, 4)
+        nchannels += growth_rate
+    nchannels = int(nchannels / times)
+    model2 = transition_w_o_pooling(model2, nchannels, dropout)  # without pooling
+    for i in range(8):
+        model2 = add_bl_layer(model2, growth_rate, dropout, 4)
+        nchannels += growth_rate
+    # nchannels = int(nchannels / times)
+    model2 = transition_w_o_pooling(model2, 171, dropout)  # without pooling
+
+    f_first = L.Pooling(net.First, pool=P.Pooling.MAX, kernel_size=2, stride=2)
+    f_first = conv_bn_relu(f_first, ks=1, nout=171, stride=1, pad=0, dropout=dropout)
+    model2 = L.Concat(model2, f_first, axis=1)
+    net.Second = model2  # pooling3: 20x20
+    # name = 'Second'
+    #AddExtraLayers
+    model3 = add_bl_layer2(model2, 86, dropout, 1) # pooling4: 10x10
+    net.Third = model3
+    model4 = add_bl_layer2(model3, 86, dropout, 1) # pooling5: 5x5
+    net.Fourth = model4
+    model5 = add_bl_layer2(model4, 86, dropout, 1) # pooling6: 3x3
+    net.Fifth = model5
+    model6 = add_bl_layer2(model5, 128, dropout, 1) # pooling7: 2x2
+    net.Sixth = model6
+
+    # AddRecurrentLayers
+    # # 300x300
+  
+    # ks = 2
+    # Recurrent1 = add_recurrent_layer(model2, ks, 128, dropout)  # 38x38
+    # net.Recurrent1 = L.Concat(Recurrent1, Concat1, axis=1)  
+    # ks=1
+    # Recurrent2 = add_recurrent_layer(model3, ks, 171, dropout)    # 19x19
+    # net.Recurrent2 = L.Concat(Recurrent2, model2, axis=1)  
+    # ks=2
+    # Recurrent3 = add_recurrent_layer(model4, ks, 86, dropout)    # 10x10
+    # net.Recurrent3 = L.Concat(Recurrent3, model3, axis=1)
+    # ks=1
+    # Recurrent4 = add_recurrent_layer(model5, ks, 86, dropout)    # 5x5
+    # net.Recurrent4 = L.Concat(Recurrent4, model4, axis=1)
+    # ks=1
+    # Recurrent5 = add_recurrent_layer(model6, ks, 86, dropout)    # 3x3
+    # net.Recurrent5 = L.Concat(Recurrent5, model5, axis=1)
+    # net.Recurrent6 = model6
+
+    # 320x320
+    ks = 2
+    Recurrent1 = add_recurrent_layer(model2, ks, 128, dropout)  # 40x40
+    net.Recurrent1 = L.Concat(Recurrent1, Concat1, axis=1)  
+    ks=2
+    Recurrent2 = add_recurrent_layer(model3, ks, 171, dropout)    # 20x20
+    net.Recurrent2 = L.Concat(Recurrent2, model2, axis=1)  
+    ks=2
+    Recurrent3 = add_recurrent_layer(model4, ks, 86, dropout)    # 10x10
+    net.Recurrent3 = L.Concat(Recurrent3, model3, axis=1)
+    ks=1
+    Recurrent4 = add_recurrent_layer(model5, ks, 86, dropout)    # 5x5
+    net.Recurrent4 = L.Concat(Recurrent4, model4, axis=1)
+    ks=1
+    Recurrent5 = add_recurrent_layer(model6, ks, 86, dropout)    # 3x3
+    net.Recurrent5 = L.Concat(Recurrent5, model5, axis=1)
+    net.Recurrent6 = model6
+
+    return net
+
+def Gated_module(net, channel_nums=[], from_layers=[]):
+    def channel_level(net, from_layer, channel_num, relu_name):
+        fc = L.InnerProduct(net[relu_name], num_output=int(channel_num))
+        sigmoid = L.Sigmoid(fc, in_place=True)
+        scale = L.Scale(net[from_layer], sigmoid, axis=0, bias_term=False, bias_filler=dict(value=0))
+        relu = L.ReLU(scale, in_place=True)
+        att_name = "{}_att".format(from_layer)
+        net[att_name] = relu
+        return net
+
+    def global_level(net, from_layer, relu_name):
+        fc = L.InnerProduct(net[relu_name], num_output=1)
+        sigmoid = L.Sigmoid(fc, in_place=True)
+        att_name = "{}_att".format(from_layer)
+        sigmoid = L.Reshape(sigmoid, reshape_param=dict(shape=dict(dim=[-1])))
+        scale = L.Scale(net[att_name], sigmoid, axis=0, bias_term=False, bias_filler=dict(value=0))
+        relu = L.ReLU(scale, in_place=True)
+        residual = L.Eltwise(net[from_layer], scale)
+        gatt_name = "{}_gate".format(from_layer)
+        net[gatt_name] = residual
+        return net
+
+    num = len(from_layers)
+    for i in range(0, num):
+        from_layer = from_layers[i]
+        channel_num = channel_nums[i]
+        # shared params
+        gate_name = "{}_gate".format(from_layer)
+        pool_name = "{}_pool".format(from_layer)
+        fc_name = "{}_fc".format(from_layer)
+        relu_name = "{}_relu".format(from_layer)
+        net[pool_name] = L.Pooling(net[from_layer], pool=P.Pooling.AVE, global_pooling=True)
+        net[fc_name] = L.InnerProduct(net[pool_name], num_output=int(channel_num/16.0))
+        net[relu_name] = L.ReLU(net[fc_name], in_place=True)
+        net = channel_level(net, from_layer, channel_num, relu_name)
+        net = global_level(net, from_layer, relu_name)
+
+    return net
+
 def ResNet101Body(net, from_layer, use_pool5=True, use_dilation_conv5=False, **bn_param):
     conv_prefix = ''
     conv_postfix = ''
