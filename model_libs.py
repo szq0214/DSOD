@@ -826,7 +826,7 @@ def Gated_module(net, channel_nums=[], from_layers=[]):
         att_name = "{}_att".format(from_layer)
         sigmoid = L.Reshape(sigmoid, reshape_param=dict(shape=dict(dim=[-1])))
         scale = L.Scale(net[att_name], sigmoid, axis=0, bias_term=False, bias_filler=dict(value=0))
-        relu = L.ReLU(scale, in_place=True)
+        # relu = L.ReLU(scale, in_place=True)
         residual = L.Eltwise(net[from_layer], scale)
         gatt_name = "{}_gate".format(from_layer)
         net[gatt_name] = residual
