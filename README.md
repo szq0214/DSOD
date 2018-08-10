@@ -9,6 +9,10 @@ This repository contains the code for the following paper
 
 The code is based on the [SSD](https://github.com/weiliu89/caffe/tree/ssd) framework. 
 
+Other Implementations:
+[[Pytorch]](https://github.com/chenyuntc/dsod.pytorch) by Yun Chen, [[Pytorch]](https://github.com/uoip/SSD-variants) by uoip, [[Pytorch]](https://github.com/qqadssp/DSOD-Pytorch) by qqadssp, [[Pytorch]](https://github.com/Ellinier/DSOD-Pytorch-Implementation) by Ellinier , [[Mxnet]](https://github.com/leocvml/DSOD-gluon-mxnet) by Leo Cheng, [[Mxnet]](https://github.com/eureka7mt/mxnet-dsod) by eureka7mt, [[Tensorflow]](https://github.com/Windaway/DSOD-Tensorflow) by Windaway.
+
+
 If you find this helps your research, please cite:
 
 	@inproceedings{Shen2017DSOD,
