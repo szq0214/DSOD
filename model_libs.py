@@ -474,7 +474,7 @@ def DSOD300_V3_Body(net, from_layer):
     net.Fourth = model3
     model4 = add_bl_layer2(model3, 128, dropout, 1) # pooling6: 3x3
     net.Fifth = model4
-    model5 = add_bl_layer2(model4, 128, dropout, 1) # pooling7: 1x1
+    model5 = add_bl_layer2(model4, 128, dropout, 1) # pooling7: 2x2
     net.Sixth = model5
     return net
 

@@ -248,7 +248,7 @@ min_dim = 300
 # Third ==> 10 x 10
 # Fourth ==> 5 x 5
 # Fifth ==> 3 x 3
-# Sixth ==> 1 x 1
+# Sixth ==> 2 x 2
 mbox_source_layers = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth']
 # in percent %
 min_ratio = 20

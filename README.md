@@ -29,7 +29,7 @@ To the best of our knowledge, this is the first work that trains neural object d
 In this work, we contribute a set of design principles for this purpose. One of the key findings is the deeply supervised structure enabled by [dense layer-wise connections](https://github.com/liuzhuang13/DenseNet), plays a critical role in learning a good detection model. Please see our paper for more details.
 
 <div align=center>
-<img src="https://user-images.githubusercontent.com/3794909/28934967-718c9302-78b5-11e7-89ee-8b514e53e23c.png" width="740">
+<img src="https://user-images.githubusercontent.com/3794909/47568639-3d1bf700-d964-11e8-824e-f46026c665c6.png" width="740">
 </div>
 
 <div align=center>
