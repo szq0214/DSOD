@@ -1,5 +1,20 @@
 # DSOD: Learning Deeply Supervised Object Detectors from Scratch
 
+## Update (02/26/2019)
+We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifies (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] when training detectors from scratch, the accuracy may be higher. This is also consistent with [2].
+
+New results on PASCAL VOC test set:
+
+| Method | VOC 2007 test *mAP* | # parameters | Models 
+|:-------|:-----:|:-------:|:-------:|:-------:|
+| DSOD300 (07+12) bs=4 on each GPU | 77.7 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=0B4cvsEOB5eUCaGU3MkRkOENRWWc) |
+| DSOD300 (07+12) bs=12 on each GPU | 78.9 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=1_ur6TYiLPUGsHoZQM1yxAZ2AXgSe-Qxm)|
+
+[1] Chao Peng, Tete Xiao, Zeming Li, Yuning Jiang, Xiangyu Zhang, Kai Jia, Gang Yu, and Jian Sun. "Megdet: A large mini-batch object detector." In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6181-6189. 2018.
+
+[2] Kaiming He, Ross Girshick, and Piotr Dollár. "Rethinking ImageNet pre-training." arXiv preprint arXiv:1811.08883 (2018).
+
+-------------------------------------------------------------------------------------
 
 This repository contains the code for the following paper 
 
