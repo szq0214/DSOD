@@ -6,7 +6,7 @@ We observe that if we simply increase the batch size (bs) on each GPU from 4 (Ti
 New results on PASCAL VOC test set:
 
 | Method | VOC 2007 test *mAP* | # parameters | Models 
-|:-------|:-----:|:-------:|:-------:|:-------:|
+|:-------|:-----:|:-------:|:-------:|
 | DSOD300 (07+12) bs=4 on each GPU | 77.7 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=0B4cvsEOB5eUCaGU3MkRkOENRWWc) |
 | DSOD300 (07+12) bs=12 on each GPU | 78.9 | 14.8M | [Download (59.2M)](https://drive.google.com/open?id=1_ur6TYiLPUGsHoZQM1yxAZ2AXgSe-Qxm)|
 
