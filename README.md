@@ -1,7 +1,9 @@
 # DSOD: Learning Deeply Supervised Object Detectors from Scratch
 
 ## Update (02/26/2019)
-We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifies (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] when training detectors from scratch, the accuracy may be higher. This is also consistent with [2].
+We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifications (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] when training detectors from scratch, the accuracy may be higher. This is also consistent with [2]. 
+
+*We have also provided some preliminary results on exploring the factors of training two-stage detectors from scratch in our extension paper [3].*
 
 New results on PASCAL VOC test set:
 
@@ -13,6 +15,8 @@ New results on PASCAL VOC test set:
 [1] Chao Peng, Tete Xiao, Zeming Li, Yuning Jiang, Xiangyu Zhang, Kai Jia, Gang Yu, and Jian Sun. "Megdet: A large mini-batch object detector." In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6181-6189. 2018.
 
 [2] Kaiming He, Ross Girshick, and Piotr Dollár. "Rethinking ImageNet pre-training." arXiv preprint arXiv:1811.08883 (2018).
+
+[3] Zhiqiang Shen, Zhuang Liu, Jianguo Li, Yu-Gang Jiang, Yurong Chen, and Xiangyang Xue. "Object Detection from Scratch with Deep Supervision." arXiv preprint arXiv:1809.09294 (2018).
 
 -------------------------------------------------------------------------------------
 
@@ -35,7 +39,13 @@ If you find this helps your research, please cite:
 		author = {Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
 		booktitle = {ICCV},
 		year = {2017}
-	}
+		}
+     @article{shen2018object,
+        title={Object Detection from Scratch with Deep Supervision},
+        author={Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
+        journal={arXiv preprint arXiv:1809.09294},
+        year={2018}
+        }
 
 ## Introduction
 
