@@ -3,7 +3,7 @@
 ## Update (02/26/2019)
 We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifications (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] when training detectors from scratch, the accuracy may be higher. This is also consistent with [2]. 
 
-*We have also provided some preliminary results on exploring the factors of training two-stage detectors from scratch in our extended paper [3].*
+*We have also provided some preliminary results on exploring the factors of training two-stage detectors from scratch in our extended paper (v2) [3].*
 
 New results on PASCAL VOC test set:
 
@@ -42,10 +42,10 @@ If you find this helps your research, please cite:
 		}
 		
      @article{shen2018object,
-        title={Object Detection from Scratch with Deep Supervision},
-        author={Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
-        journal={arXiv preprint arXiv:1809.09294},
-        year={2018}
+           title={Object Detection from Scratch with Deep Supervision},
+           author={Shen, Zhiqiang and Liu, Zhuang and Li, Jianguo and Jiang, Yu-Gang and Chen, Yurong and Xue, Xiangyang},
+           journal={arXiv preprint arXiv:1809.09294},
+           year={2018}
         }
 
 ## Introduction
