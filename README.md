@@ -1,9 +1,9 @@
 # DSOD: Learning Deeply Supervised Object Detectors from Scratch
 
 ## Update (02/26/2019)
-We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifications (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] when training detectors from scratch, the accuracy may be higher. This is also consistent with [2]. 
+We observe that if we simply increase the batch size (bs) on each GPU from 4 (Titan X) to 12 (P40) for training BN layers, our DSOD300 can achieve much better performance without any other modifications (see comparisons below). We think if we have a better solution to tune BN layers' params, e.g., Sync BN [1] or Group Norm [2] when training detectors from scratch **with limited batch size**, the accuracy may be higher. This is also consistent with [3]. 
 
-*We have also provided some preliminary results on exploring the factors of training two-stage detectors from scratch in our extended paper (v2) [3].*
+*We have also provided some preliminary results on exploring the factors of training two-stage detectors from scratch in our extended [paper](https://arxiv.org/abs/1809.09294) (v2) [4].*
 
 New results on PASCAL VOC test set:
 
@@ -14,9 +14,11 @@ New results on PASCAL VOC test set:
 
 [1] Chao Peng, Tete Xiao, Zeming Li, Yuning Jiang, Xiangyu Zhang, Kai Jia, Gang Yu, and Jian Sun. "Megdet: A large mini-batch object detector." In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6181-6189. 2018.
 
-[2] Kaiming He, Ross Girshick, and Piotr Dollár. "Rethinking ImageNet pre-training." arXiv preprint arXiv:1811.08883 (2018).
+[2] Yuxin Wu, and Kaiming He. "Group normalization." In Proceedings of the European Conference on Computer Vision (ECCV), pp. 3-19. 2018.
 
-[3] Zhiqiang Shen, Zhuang Liu, Jianguo Li, Yu-Gang Jiang, Yurong Chen, and Xiangyang Xue. "Object Detection from Scratch with Deep Supervision." arXiv preprint arXiv:1809.09294 (2018).
+[3] Kaiming He, Ross Girshick, and Piotr Dollár. "Rethinking imagenet pre-training." In Proceedings of the IEEE International Conference on Computer Vision, pp. 4918-4927. 2019.
+
+[4] Zhiqiang Shen, Zhuang Liu, Jianguo Li, Yu-Gang Jiang, Yurong Chen, and Xiangyang Xue. "Object detection from scratch with deep supervision." IEEE transactions on pattern analysis and machine intelligence (2019).
 
 -------------------------------------------------------------------------------------
 
